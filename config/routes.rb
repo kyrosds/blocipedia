@@ -5,5 +5,7 @@ Rails.application.routes.draw do
 
   get 'users/show'
 
+  get 'about' => 'welcome#about'
+
   root 'welcome#index'
 end

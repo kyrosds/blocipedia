@@ -1,7 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe WikisController, type: :controller do
-  let(:my_wiki) { Wiki.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false) }
+  let(:my_wiki) { Wiki.create(title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false) }
+  let(:user) { create(:user)}
+
+  before do
+    sign_in user
+  end
 
   describe "GET #index" do
     before do
@@ -12,8 +17,8 @@ RSpec.describe WikisController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    it "assigns my_wiki to @wikis" do
-      expect(assigns(:wikis)).to eq([my_wiki])
+    it "assigns my_wiki to @wiki" do
+      expect(assigns(:wiki)).to eq([my_wiki])
     end
   end
 
@@ -31,7 +36,7 @@ RSpec.describe WikisController, type: :controller do
     end
 
     it "assigns my_wiki to @wikis" do
-      expect(assigns(:wikis)).to eq(my_wiki)
+      expect(assigns(:wiki)).to eq(my_wiki)
     end
   end
 
@@ -59,7 +64,7 @@ RSpec.describe WikisController, type: :controller do
     end
 
     it "increases the number of Wiki by 1" do
-      expect{wiki :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false}}.to change(post, :count).by(1)
+      expect{post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false}}.to change(Wiki, :count).by(1)
     end
 
     it "assigns the new wiki to @wiki" do
@@ -85,7 +90,7 @@ RSpec.describe WikisController, type: :controller do
     end
 
     it "assigns wiki to be updated to @wiki" do
-      post_instance = assigns(:wiki)
+      wiki_instance = assigns(:wiki)
 
       expect(wiki_instance.id).to eq my_wiki.id
       expect(wiki_instance.title).to eq my_wiki.title
@@ -98,14 +103,7 @@ RSpec.describe WikisController, type: :controller do
       new_title = RandomData.random_sentence
       new_body = RandomData.random_paragraph
 
-      put :update, id: my_wiki.id wiki: {title: new_title, body: new_body}
-    end
-
-    it "updates wiki with expected attributes"do
-      updated_wiki = assigns(:wiki)
-      expect(wiki_instance.id).to eq my_wiki.id
-      expect(wiki_instance.title).to eq my_wiki.title
-      expect(wiki_instance.body).to eq my_wiki.body
+      put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
     end
 
     it "redirects to the updated wiki" do
@@ -119,7 +117,7 @@ RSpec.describe WikisController, type: :controller do
     end
 
     it "deletes the wiki" do
-      count = Wiki.where({id: my_wiki.id}).sizre
+      count = Wiki.where({id: my_wiki.id}).size
       expect(count).to eq 0
     end
 
