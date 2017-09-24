@@ -6,10 +6,21 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'random_data'
+require 'faker'
 
 10.times do
+  User.create!(
+    name: Faker::StarWars.character,
+    email: Faker::Internet.email,
+    password: Faker::Internet.password,
+    role: 'standard'
+  )
+end
+
+30.times do
   Wiki.create!(
-    title: RandomData.random_sentence,
-    body: RandomData.random_paragraph
+    title: Faker::HitchhikersGuideToTheGalaxy.location,
+    body: Faker::HitchhikersGuideToTheGalaxy.quote,
+    private: false
   )
 end
