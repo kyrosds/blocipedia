@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe WikisController, type: :controller do
-  let(:my_wiki) { Wiki.create(title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false) }
-  let(:user) { create(:user)}
+  let(:user) { create(:user) }
+  let(:my_wiki) { create(:wiki, user: user) }
 
   before do
     sign_in user
@@ -17,8 +17,8 @@ RSpec.describe WikisController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    it "assigns my_wiki to @wiki" do
-      expect(assigns(:wiki)).to eq([my_wiki])
+    it "assigns my_wiki to @wikis" do
+      expect(assigns(:wikis)).to eq([my_wiki])
     end
   end
 

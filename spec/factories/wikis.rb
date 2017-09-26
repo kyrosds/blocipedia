@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :wiki do
-    title "MyString"
-    body "MyText"
+    title Faker::HitchhikersGuideToTheGalaxy.location
+    body Faker::HitchhikersGuideToTheGalaxy.quote
     private false
     user nil
   end
