@@ -2,8 +2,19 @@
   <div class="col-12">
     <h1>Blocipedia</h1>
     <h3>Your go to blog spot!</h3>
-    <% if !user_signed_in? %>
-      <% link_to "Sign_up", new_user_registration_path, :class => 'btn btn-primary' %>
-    <% end %>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <% if !user_signed_in? %>
+        <% link_to "Sign_up", new_user_registration_path, :class => 'btn btn-primary' %>
+      <% end %>
+      <div class="row">
+        <div class="col-sm-6">
+          <% if !current_user || current_user.standard? %>
+            <%= link_to "Go Premium!", new_charge_path, :class => 'btn btn-primary' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
