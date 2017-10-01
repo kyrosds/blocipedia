@@ -17,10 +17,43 @@ require 'faker'
   )
 end
 
-30.times do
+users = User.all
+
+10.times do
   Wiki.create!(
     title: Faker::HitchhikersGuideToTheGalaxy.location,
     body: Faker::HitchhikersGuideToTheGalaxy.quote,
-    private: false
+    private: false,
+    user: users.sample
   )
 end
+
+10.times do
+  Wiki.create!(
+    title: Faker::FamilyGuy.character,
+    body: Faker::FamilyGuy.quote,
+    private: true,
+    user: users.sample
+  )
+end
+
+User.create!(
+  name: 'David Sires',
+  email: 'd.sires@yahoo.com',
+  password: 'helloworld',
+  role: 'admin'
+)
+
+User.create!(
+  name: Faker::StarWars.character,
+  email: 'premium@email.com',
+  password: 'helloworld',
+  role: 'premium'
+)
+
+User.create!(
+  name: Faker::StarWars.character,
+  email: 'standard@email.com',
+  password: 'helloworld',
+  role: 'standard'
+)

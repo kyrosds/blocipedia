@@ -19,8 +19,8 @@ class ChargesController < ApplicationController
 
 		charge = Stripe::Charge.create(
 			customer:    customer.id,
-			amount:      @amount,
-			description: "Blocipedia Membership - #{current_user.email}",
+			amount:      1500,
+      description: "Blocipedia Membership - #{current_user.email}",
 			currency:    'usd'
 		)
 
@@ -33,7 +33,7 @@ class ChargesController < ApplicationController
 		flash[:alert] = e.message
 		redirect_to new_charge_path
 	end
-  
+
   def destroy
     current_user.standard!
 
