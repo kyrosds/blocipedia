@@ -1,7 +1,8 @@
 class Wiki < ActiveRecord::Base
   belongs_to :user
 
-  scope :public_wikis, -> (wikis) { where private: false }
+  has_many :collaborators
+  has_many :wikis, through: :collaborators
 
   after_initialize { self.private ||= false }
 end

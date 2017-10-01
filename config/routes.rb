@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
+  resources :wikis
+
   resources :charges, only: [:new, :create, :destroy]
 
-  get '/charges', to: 'charges#destroy', as: :downgrade
+  resources :wikis do
+    resources :collaborators, only: [:create, :destroy]
+  end
 
-  resources :wikis
+  get '/charges', to: 'charges#destroy', as: :downgrade
 
   devise_for :users
 

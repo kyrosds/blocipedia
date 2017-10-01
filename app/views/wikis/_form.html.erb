@@ -1,14 +1,4 @@
 <%= form_for [wiki] do |f| %>
-    <% if wiki.errors.any? %>
-        <div class="alert alert-danger">
-          <h4><%= pluralize(wiki.errors.count, "error") %>.</h4>
-          <ul>
-            <% wiki.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
     <div class="form-group">
       <%= f.label :title %>
       <%= f.text_field :title, class: 'form-control', placeholder: "Enter wiki name" %>
@@ -23,6 +13,13 @@
               <%= f.check_box :private, id: 'private' %> Private
           <% end %>
         </div>
+    <% end %>
+    
+    <% if @wiki.private? && current_user.admin? || current_user.id == @wiki.user_id %>
+        <%= render partial: 'collaborators/form', locals: { f: f } %>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".collaborator-modal-lg">
+          Manage Collaborators
+        </button>
     <% end %>
     <%= f.submit "Save", class: 'btn btn-success' %>
 <% end %>

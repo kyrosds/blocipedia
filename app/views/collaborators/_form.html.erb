@@ -1,0 +1,42 @@
+<div class="modal fade collaborator-modal-lg" id="collaboratorsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Manage Collaborators</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <table class="table">
+            <tr>
+              <th>User Name</th>
+              <th>User Email</th>
+              <th>Collaborator</th>
+            </tr>
+            <% @users.each do |user| %>
+                <% if user.id != @wiki.user_id %>
+                    <tr>
+                      <td><%= user.name %></td>
+                      <td><%= user.email %>
+                      <td>
+                        <% if is_user_collaborator?(user.id, @collaborators) %>
+                            <%= link_to "Remove", wiki_collaborator_path(@wiki.id, @wiki.collaborators.find_by_user_id(user.id).id), method: :delete, class: 'btn btn-danger' %>
+                        <% else %>
+                            <%= link_to "Add", wiki_collaborators_path(@wiki.id, user_id: user.id), method: :post, class: 'btn btn-success' %>
+                        <% end %>
+                      </td>
+                    </tr>
+                <% end %>
+            <% end %>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

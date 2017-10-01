@@ -1,35 +1,14 @@
-<h1>Wikis</h1>
 <div class="row">
   <div class="col-12">
-    <%= link_to "New Wiki", new_wiki_path, class: "btn btn-success float-right" %>
+    <div class="row">
+      <div class="col-6">
+        <h1>Wikis</h1>
+      </div>
+      <div class="col-6">
+        <%= link_to "New Wiki", new_wiki_path, class: "btn btn-success float-right" if policy(:wiki).new? %>
+      </div>
+    </div>
+    <%= render @wikis %>
   </div>
 </div>
-  <% if current_user %>
-    <ul class="nav nav-tabs mt-4" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Public Wikis</a>
-      </li>
-      <% if current_user.premium? || current_user.admin? %>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#private" role="tab">My Wikis</a>
-        </li>
-      <% end %>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#collaborate" role="tab">Wikis I Contribute To</a>
-      </li>
-    </ul>
-  <% end %>
-
-  <div class="tab-content">
-    <div class="tab-pane active col-12 p-0" id="home" role="tabpanel">
-      <% @wikis.each do |wiki| %>
-        <div class="media">
-          <div class="media-body">
-            <h4 class="media-heading">
-              <%= link_to wiki.title, wiki %>
-            </h4>
-          </div>
-        </div>
-      <% end %>
-    </div>
   </div>

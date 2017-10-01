@@ -1,27 +1,27 @@
 class WikisController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @wikis = Wiki.all
-    @wikis = @wikis.public_wikis(@wikis)
+    @wikis = policy_scope(Wiki)
   end
 
   def show
     @wiki = Wiki.find(params[:id])
+
   end
 
   def new
     @wiki = Wiki.new
+    
   end
 
   def create
     @wiki = Wiki.new(wiki_params)
-    @wiki.assign_attributes(wiki_params)
 
     @wiki.user = current_user
 
     if @wiki.save
-      flash[:notice] = "Post was saved."
+      flash[:notice] = "Wiki was saved."
       redirect_to @wiki
     else
       flash.now[:alert] = "There was an error saving the Wiki. Please try again."
@@ -31,6 +31,9 @@ class WikisController < ApplicationController
 
   def edit
     @wiki = Wiki.find(params[:id])
+    @users = User.all
+    @get_wikis = Collaborator.where(wiki_id: @wiki.id)
+    @collaborators = User.where(id: @get_wikis.pluck(:user_id))
   end
 
   def update
@@ -38,11 +41,11 @@ class WikisController < ApplicationController
     @wiki.assign_attributes(wiki_params)
 
     if @wiki.save
-      flash[:notice] = "Post was saved."
+      flash[:notice] = "Wiki was saved."
       redirect_to @wiki
     else
       flash.now[:alert] = "There was an error saving the Wiki. Please try again."
-      render :new
+      render :edit
     end
   end
 
